@@ -33,7 +33,7 @@ public final class ZookeeperResourceStore implements ResourceStore {
 
   @Override
   public void store(Resources resources) {
-    String path = String.format("%s/%s", config.basePath(), nodeDescriptor.id());
+    String path = path();
     byte[] encodedResources = resources.toByteArray();
     try {
       curator.create()
@@ -45,6 +45,13 @@ public final class ZookeeperResourceStore implements ResourceStore {
       String errorMessage = String.format("Failed writing resource to path %s", path);
       logger.error(errorMessage, creationFailure);
     }
+  }
+
+  private String path() {
+    return config.pathFormat().replace(
+      ZookeeperResourceStoreConfig.PATH_NODE_ID_PLACEHOLDER,
+      nodeDescriptor.id()
+    );
   }
 
   @Override

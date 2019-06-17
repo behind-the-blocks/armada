@@ -3,20 +3,22 @@ package net.twerion.armada.advisor.store;
 import com.google.common.base.Preconditions;
 
 public final class ZookeeperResourceStoreConfig {
-  private long timeToLife;
-  private String basePath;
+  public static final String PATH_NODE_ID_PLACEHOLDER = "${node_id}";
 
-  private ZookeeperResourceStoreConfig(long timeToLife, String basePath) {
+  private long timeToLife;
+  private String pathFormat;
+
+  private ZookeeperResourceStoreConfig(long timeToLife, String pathFormat) {
     this.timeToLife = timeToLife;
-    this.basePath = basePath;
+    this.pathFormat = pathFormat;
   }
 
   public long timeToLife() {
     return timeToLife;
   }
 
-  public String basePath() {
-    return basePath;
+  public String pathFormat() {
+    return pathFormat;
   }
 
   public static Builder newBuilder() {
@@ -25,15 +27,16 @@ public final class ZookeeperResourceStoreConfig {
 
   public static Builder newBuilder(ZookeeperResourceStoreConfig config) {
     Preconditions.checkNotNull(config);
-    return new Builder(config.timeToLife, config.basePath);
+    return new Builder(config.timeToLife, config.pathFormat);
   }
 
   public static final class Builder {
     private long timeToLife;
-    private String basePath;
+    private String pathFormat;
 
-    private Builder(long timeToLife, String basePath) {
+    private Builder(long timeToLife, String pathFormat) {
       this.timeToLife = timeToLife;
+      this.pathFormat = pathFormat;
     }
 
     public Builder withTimeToLife(int timeToLife) {
@@ -42,14 +45,14 @@ public final class ZookeeperResourceStoreConfig {
       return this;
     }
 
-    public Builder withBasePath(String basePath) {
-      Preconditions.checkNotNull(basePath);
-      this.basePath = basePath;
+    public Builder withPathFormat(String pathFormat) {
+      Preconditions.checkNotNull(pathFormat);
+      this.pathFormat = pathFormat;
       return this;
     }
 
     public ZookeeperResourceStoreConfig create() {
-      return new ZookeeperResourceStoreConfig(timeToLife, basePath);
+      return new ZookeeperResourceStoreConfig(timeToLife, pathFormat);
     }
   }
 }

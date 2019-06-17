@@ -2,6 +2,7 @@ advisor:
   cycleRate: 5000
   store:
     ttl: 10000
+    pathFormat: 'armada/nodes/${node_id}/health'
     zookeeper:
       connectionString: localhost
       retryPolicy:
