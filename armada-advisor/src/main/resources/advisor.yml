@@ -1,4 +1,9 @@
 advisor:
+  # The rate at which the advisor begins a new cycle. If the current cycle
+  # is still running when the cycleRate timeout has been completed, the next
+  # cycle is skipped (missed). This value should be higher than the ttl of
+  # writes to the store, to tolerate small delays without having other cluster
+  # members think, that the node is down.
   cycleRate: 5000
   store:
     ttl: 10000
