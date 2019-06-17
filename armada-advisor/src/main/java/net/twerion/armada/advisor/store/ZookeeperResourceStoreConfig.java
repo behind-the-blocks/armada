@@ -8,6 +8,7 @@ public final class ZookeeperResourceStoreConfig {
 
   private ZookeeperResourceStoreConfig(long timeToLife, String basePath) {
     this.timeToLife = timeToLife;
+    this.basePath = basePath;
   }
 
   public long timeToLife() {

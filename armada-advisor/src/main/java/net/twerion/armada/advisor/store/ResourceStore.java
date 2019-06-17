@@ -10,5 +10,6 @@ public interface ResourceStore {
   void store(Resources resources);
 
   CompletableFuture<?> storeAsync(Resources resources);
+
   CompletableFuture<?> storeAsync(Resources resources, Executor executor);
 }
