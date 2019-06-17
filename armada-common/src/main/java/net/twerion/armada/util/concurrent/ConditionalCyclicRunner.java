@@ -14,10 +14,17 @@ public final class ConditionalCyclicRunner implements CyclicRunner {
   }
 
   @Override
+  public void start() {
+    delegate.start();
+  }
+
+  @Override
   public void run() {
-    if (condition.getAsBoolean()) {
-      delegate.run();
+    if (!condition.getAsBoolean()) {
+      stop();
+      return;
     }
+    delegate.run();
   }
 
   @Override

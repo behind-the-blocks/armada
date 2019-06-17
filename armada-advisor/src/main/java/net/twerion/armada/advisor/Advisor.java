@@ -17,6 +17,20 @@ public final class Advisor {
   private AnalysisFactory analysisFactory;
   private SystemInformationCollector collector;
 
+  private Advisor(
+      Semaphore runMutex,
+      ResourceStore store,
+      ResourceAnalyser analyser,
+      AnalysisFactory analysisFactory,
+      SystemInformationCollector collector
+  ) {
+    this.runMutex = runMutex;
+    this.store = store;
+    this.analyser = analyser;
+    this.analysisFactory = analysisFactory;
+    this.collector = collector;
+  }
+
   public void run() {
     if (!runMutex.tryAcquire()) {
       // Do not run if the advisor is currently running. The current thread
