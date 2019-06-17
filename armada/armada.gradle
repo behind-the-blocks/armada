@@ -1,3 +1,12 @@
+buildscript {
+  repositories {
+    mavenCentral()
+  }
+  dependencies {
+    classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.9'
+  }
+}
+
 group 'net.twerion.armada'
 version '1.0.0'
 
@@ -11,20 +20,18 @@ repositories {
   mavenLocal()
 }
 
-dependencies {
-  implementation 'com.google.guava:guava:28.0-jre'
-  implementation 'com.google.protobuf:protobuf-java:3.5.1'
-  testImplementation 'junit:junit:4.12'
+configurations {
+  included
 }
 
-buildscript {
-  repositories {
-    mavenCentral()
-  }
-  dependencies {
-    classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.9'
-  }
+dependencies {
+  implementation 'com.google.protobuf:protobuf-java:3.5.1'
+  implementation 'com.google.guava:guava:28.0-jre'
+  testImplementation 'junit:junit:4.12'
+
+  configurations.implementation.extendsFrom(configurations.included)
 }
+
 
 sourceSets {
   main {
@@ -49,5 +56,11 @@ protobuf {
   }
   generateProtoTasks {
     ofSourceSet('main')
+  }
+}
+
+jar {
+  from {
+    configurations.included.collect { it.isDirectory() ? it : zipTree(it) }
   }
 }
