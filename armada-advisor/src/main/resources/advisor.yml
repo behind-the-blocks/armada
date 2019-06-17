@@ -1,0 +1,10 @@
+advisor:
+  cycleRate: 5000
+  store:
+    ttl: 10000
+    zookeeper:
+      connectionString: localhost
+      retryPolicy:
+        exponentialBackoff:
+          timeout: 3000
+          retries: 3

@@ -4,8 +4,8 @@ import com.google.common.annotations.VisibleForTesting;
 
 import net.twerion.armada.Memory;
 import net.twerion.armada.Resources;
-import net.twerion.armada.advisor.CommonResourceKind;
-import net.twerion.armada.advisor.ResourceUsage;
+import net.twerion.armada.advisor.resource.CommonResourceKind;
+import net.twerion.armada.advisor.resource.ResourceUsage;
 
 public final class MemoryAnalyser implements ResourceAnalyser {
   private long healthyPercentageLimit;

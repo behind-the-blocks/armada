@@ -1,4 +1,4 @@
-package net.twerion.armada.advisor;
+package net.twerion.armada.advisor.resource;
 
 public enum ResourceUsage {
   HEALTHY,

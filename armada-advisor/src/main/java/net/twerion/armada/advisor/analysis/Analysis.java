@@ -1,7 +1,7 @@
 package net.twerion.armada.advisor.analysis;
 
-import net.twerion.armada.advisor.ResourceKind;
-import net.twerion.armada.advisor.ResourceUsage;
+import net.twerion.armada.advisor.resource.ResourceKind;
+import net.twerion.armada.advisor.resource.ResourceUsage;
 
 public interface Analysis extends AutoCloseable {
 
