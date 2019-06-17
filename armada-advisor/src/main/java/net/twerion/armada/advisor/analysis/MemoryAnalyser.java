@@ -22,7 +22,7 @@ public final class MemoryAnalyser implements ResourceAnalyser {
   public void analyse(Analysis analysation, Resources resources) {
     Memory memory = resources.getMemory();
     int percentage = calculatePercentage(memory);
-    ResourceUsage usage = usageOfPercentage(percentage);
+    ResourceUsage usage = usageByPercentage(percentage);
     analysation.reportUsage(CommonResourceKind.MEMORY, usage, percentage);
   }
 
@@ -31,7 +31,7 @@ public final class MemoryAnalyser implements ResourceAnalyser {
   }
 
   @VisibleForTesting
-  ResourceUsage usageOfPercentage(int percentage) {
+  ResourceUsage usageByPercentage(int percentage) {
     if (percentage <= healthyPercentageLimit) {
       return ResourceUsage.HEALTHY;
     }
