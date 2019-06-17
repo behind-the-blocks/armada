@@ -1,0 +1,15 @@
+plugins {
+  id 'java'
+}
+
+group 'net.twerion.armada'
+version '1.0.0'
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  implementation 'com.github.oshi:oshi-core:3.13.3'
+  testImplementation 'junit:junit:4.12'
+}

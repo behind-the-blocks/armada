@@ -1,0 +1,17 @@
+rootProject.name = 'armada-parent'
+
+include 'armada'
+include 'armada-scheduler'
+include 'armada-worker'
+include 'armada-recipe'
+include 'armada-advisor'
+include 'armada-apiserver'
+include 'armada-controller'
+include 'armada-common'
+
+rootProject.children.each { project ->
+  project.buildFileName = "${project.name}.gradle"
+  assert project.projectDir.isDirectory()
+  assert project.buildFile.exists()
+  assert project.buildFile.isFile()
+}

@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option java_package = "net.twerion.armada";
+option java_multiple_files = true;
+
+message Memory {
+  int64 used = 2;
+  int64 available = 1;
+}
+
+message Resources {
+  Memory memory = 1;
+}
+
+message ResourceRequirements {
+  int64 bytes_of_memory = 1;
+}

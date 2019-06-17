@@ -1,0 +1,29 @@
+filter:
+  # The limit of nodes to be filtered. 'none' if there is no limit.
+  limit: none
+  # HostFilter implementations that are used when filtering a candidate.
+  # Can either be a list of fully qualified class-names or 'all'.
+  steps:
+    - net.twerion.armada.scheduler.filter.FilteredShipBlueprint
+    - net.twerion.armada.scheduler.filter.NodeShipSelectorFilter
+    - net.twerion.armada.scheduler.filter.ShipNodeSelectorFilter
+
+priority:
+  # The amount of nodes with the highest priority, that are close host
+  # candidates. Meaning that the scheduler will randomly select one of
+  # them to become the host.
+  limit: none
+  # HostPrioritizer implementations that are used when prioritizing a
+  # previously filtered candidate. They will allow ships to be deployed
+  # to the most suitable candidate. Can either be a list of fully qualified
+  # class-names or 'all'.
+  steps: all
+
+# Work queue
+queue:
+  zookeeper:
+    ...
+
+# List of host candidates
+candidate:
+  zookeeper:

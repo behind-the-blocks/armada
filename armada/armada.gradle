@@ -1,0 +1,53 @@
+group 'net.twerion.armada'
+version '1.0.0'
+
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'com.google.protobuf'
+
+repositories {
+  google()
+  mavenCentral()
+  mavenLocal()
+}
+
+dependencies {
+  implementation 'com.google.guava:guava:28.0-jre'
+  implementation 'com.google.protobuf:protobuf-java:3.5.1'
+  testImplementation 'junit:junit:4.12'
+}
+
+buildscript {
+  repositories {
+    mavenCentral()
+  }
+  dependencies {
+    classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.9'
+  }
+}
+
+sourceSets {
+  main {
+    proto {
+      srcDir 'src/main/protobuf'
+    }
+    java {
+      srcDirs = ['src/main/java',
+                 "${buildDir}/generated/source/proto/main/java"]
+    }
+  }
+  test {
+    proto {
+      srcDir 'src/test/java'
+    }
+  }
+}
+
+protobuf {
+  protoc {
+    artifact = 'com.google.protobuf:protoc:3.0.0-alpha-3'
+  }
+  generateProtoTasks {
+    ofSourceSet('main')
+  }
+}

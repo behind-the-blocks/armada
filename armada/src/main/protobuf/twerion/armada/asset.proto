@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option java_package = "net.twerion.armada";
+option java_multiple_files = true;
+
+message Asset {
+  string id = 1;
+  string type = 2;
+  string name = 3;
+  string namespace = 4;
+  AssetVersion version = 5;
+}
+
+message AssetVersion {
+  int32 major = 1;
+  int32 minor = 2;
+  int32 patch = 3;
+  repeated string tags = 4;
+}

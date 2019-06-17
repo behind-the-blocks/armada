@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+option java_package = "net.twerion.armada.api";
+option java_multiple_files = true;
+
+import "twerion/armada/node.proto";
+import "twerion/armada/filter.proto";
+
+message FindNodeByIdRequest {}
+
+message FindNodeResponse {}
+
+message ListAllNodesRequest { }
+
+message ListNodesByLabelRequest {
+  LabelSelector selector = 1;
+}
+
+message ListNodesResponse {
+  repeated Node nodes = 1;
+}
+
+message CreateNodeRequest {
+
+}
+
+message CreateNodeResponse {
+
+}
+
+message DeleteNodeRequest {
+
+}
+
+message DeleteNodeResponse {
+
+}
+
+message NodeUpdateRequest {
+  LabelSelector selector = 1;
+}
+
+message NodeUpdateResponse {}
+
+service NodeService {
+
+  rpc Delete(DeleteNodeRequest) returns (DeleteNodeResponse) {}
+
+  rpc Create(CreateNodeRequest) returns (CreateNodeResponse) {}
+
+  rpc ListAll(ListAllNodesRequest) returns (ListNodesResponse) {}
+
+  rpc ListByLabel(ListNodesByLabelRequest) returns (ListNodesResponse) {}
+
+  rpc FindById(FindNodeByIdRequest) returns (FindNodeResponse) {}
+
+  rpc ListenForUpdates(NodeUpdateRequest) returns (stream NodeUpdateResponse) {}
+}
