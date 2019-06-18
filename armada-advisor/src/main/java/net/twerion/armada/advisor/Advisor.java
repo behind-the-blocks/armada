@@ -1,14 +1,15 @@
 package net.twerion.armada.advisor;
 
+import java.util.concurrent.Semaphore;
+
+import oshi.SystemInfo;
+
 import net.twerion.armada.Resources;
 import net.twerion.armada.advisor.analysis.Analysis;
 import net.twerion.armada.advisor.analysis.AnalysisFactory;
 import net.twerion.armada.advisor.analysis.ResourceAnalyser;
 import net.twerion.armada.advisor.store.ResourceStore;
 import net.twerion.armada.advisor.system.SystemInformationCollector;
-import oshi.SystemInfo;
-
-import java.util.concurrent.Semaphore;
 
 public final class Advisor {
   private Semaphore runMutex;

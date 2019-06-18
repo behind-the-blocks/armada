@@ -27,7 +27,7 @@ public final class AdvisorFactory {
   }
 
   private Advisor createAdvisor() {
-    return new Advisor();
+    return null; // return new Advisor();
   }
 
   private CyclicRunner createCyclicRunner(Advisor advisor) {

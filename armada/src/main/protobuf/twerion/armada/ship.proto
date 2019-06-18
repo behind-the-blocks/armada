@@ -17,13 +17,14 @@ enum ShipLifecycleStage {
 }
 
 message Ship {
+  string id = 1;
   oneof blueprints {
-    ShipBlueprint blueprint = 1;
-    string blueprint_id = 2;
+    ShipBlueprint blueprint = 2;
+    string blueprint_id = 3;
   }
-  ShipLifecycleStage lifecycle_stage = 3;
-  string custom_status = 4;
-  string node_id = 5;
+  ShipLifecycleStage lifecycle_stage = 4;
+  string custom_status = 5;
+  string node_id = 6;
 }
 
 message ShipBlueprint {

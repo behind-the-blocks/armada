@@ -3,3 +3,38 @@ syntax = "proto3";
 option java_package = "net.twerion.armada.api";
 option java_multiple_files = true;
 
+import "twerion/armada/ship.proto";
+
+message ListShipsByLifecycleStageRequest {
+  ShipLifecycleStage lifecycle_stage = 1;
+  int32 limit = 2;
+}
+
+message ListShipsResponse {
+  repeated Ship ships = 1;
+}
+
+// Only updates the ships lifecycle stage if the 'current' stage matches the
+// actual current state of the ship. This is done to prevent nodes with stale
+// data from updating the ship.
+message UpdateShipLifecycleStageRequest {
+  string ship_id = 1;
+  ShipLifecycleStage current = 2;
+  ShipLifecycleStage next = 3;
+}
+
+message UpdateShipLifecycleStageResponse {
+  ShipLifecycleStage new_stage = 1;
+  oneof status {
+    bool success = 2;
+    string error_code = 3;
+  }
+}
+
+service ShipService {
+  rpc UpdateShipLifecycleStage(UpdateShipLifecycleStageRequest)
+    returns (UpdateShipLifecycleStageResponse) {}
+
+  rpc ListShipsByLifecycleStage(ListShipsByLifecycleStageRequest)
+   returns (ListShipsResponse) {}
+}
