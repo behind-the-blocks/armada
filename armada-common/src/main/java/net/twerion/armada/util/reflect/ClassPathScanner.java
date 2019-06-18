@@ -6,6 +6,7 @@ import java.util.stream.Stream;
 
 import com.google.common.reflect.ClassPath;
 
+@SuppressWarnings("UnstableApiUsage")
 public final class ClassPathScanner implements AutoCloseable {
   private Collection<Class<?>> loadedClasses;
 
@@ -24,6 +25,7 @@ public final class ClassPathScanner implements AutoCloseable {
     return !type.isInterface();
   }
 
+  @SuppressWarnings("unchecked")
   private <E> Class<E> unsafeTypeCast(Class<?> type) {
     return (Class<E>) type;
   }
