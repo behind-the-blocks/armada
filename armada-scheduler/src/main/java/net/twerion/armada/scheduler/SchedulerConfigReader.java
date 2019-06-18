@@ -107,7 +107,10 @@ public final class SchedulerConfigReader {
   }
 
   public static void main(String[] arguments) throws IOException {
-    YamlMapping rootMapping = Yaml.createYamlInput("").readYamlMapping();
+    YamlMapping rootMapping =
+      Yaml.createYamlInput(
+        SchedulerConfigReader.class.getClassLoader().getResourceAsStream("scheduler.yml")
+      ).readYamlMapping();
     SchedulerConfigReader reader = new SchedulerConfigReader(
       LogManager.getLogger("test"), Guice.createInjector(), rootMapping);
 

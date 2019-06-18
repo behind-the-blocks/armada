@@ -3,10 +3,7 @@ filter:
   limit: none
   # HostFilter implementations that are used when filtering a candidate.
   # Can either be a list of fully qualified class-names or 'all'.
-  steps:
-    - net.twerion.armada.scheduler.filter.FilteredShipBlueprint
-    - net.twerion.armada.scheduler.filter.NodeShipSelectorFilter
-    - net.twerion.armada.scheduler.filter.ShipNodeSelectorFilter
+  steps: all
 
 priority:
   # The amount of nodes with the highest priority, that are close host

@@ -23,6 +23,7 @@ message UpdateShipLifecycleStageRequest {
   ShipLifecycleStage next = 3;
 }
 
+
 message UpdateShipLifecycleStageResponse {
   ShipLifecycleStage new_stage = 1;
   oneof status {
@@ -31,7 +32,21 @@ message UpdateShipLifecycleStageResponse {
   }
 }
 
+message RescheduleShipRequest {
+  string ship_id = 1;
+}
+
+message RescheduleShipResponse {
+  bool ship_discarded = 1;
+  oneof status {
+    bool success = 2;
+    string error_code = 3;
+  }
+}
+
 service ShipService {
+  rpc Reschedule(RescheduleShipRequest) returns (RescheduleShipResponse) {}
+
   rpc UpdateShipLifecycleStage(UpdateShipLifecycleStageRequest)
     returns (UpdateShipLifecycleStageResponse) {}
 
