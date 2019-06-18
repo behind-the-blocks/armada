@@ -4,7 +4,7 @@
     <!--TODO: Update for prod -->
     <Console name="SlowConsole" target="SYSTEM_OUT">
       <PatternLayout
-        pattern="%d{HH:mm:ss} %-5level in %t | %logger{36}: %msg%n"/>
+        pattern="%d{HH:mm:ss} %highlight{%-5level}{FATAL=red blink, ERROR=red, WARN=yellow bold, INFO=green, DEBUG=green bold, TRACE=blue} in %t | %logger{36}: %highlight{%msg%n}{FATAL=red blink, ERROR=red, WARN=yellow bold, INFO=green, DEBUG=green bold, TRACE=blue}"/>
     </Console>
     <File name="LogFile" fileName="scheduler.log" immediateFlush="false"
           append="false">
