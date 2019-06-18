@@ -4,6 +4,7 @@ option java_package = "net.twerion.armada.api";
 option java_multiple_files = true;
 
 import "twerion/armada/node.proto";
+import "twerion/armada/ship.proto";
 import "twerion/armada/filter.proto";
 
 message FindNodeByIdRequest {}
@@ -20,6 +21,15 @@ message ListNodesByLabelRequest {
 
 message ListNodesResponse {
   repeated Node nodes = 1;
+}
+
+message ListShipsOfNodeRequest {
+  ShipLifecycleStage lifecycle_stage = 1;
+  int64 limit = 2;
+}
+
+message ListShipsOfNodeResponse {
+  repeated Ship ships = 1;
 }
 
 message CreateNodeRequest {
@@ -45,6 +55,8 @@ message NodeUpdateRequest {
 message NodeUpdateResponse {}
 
 service NodeService {
+
+  rpc ListShipsOfNode(ListShipsOfNodeRequest) returns (ListShipsOfNodeResponse) {}
 
   rpc Delete(DeleteNodeRequest) returns (DeleteNodeResponse) {}
 

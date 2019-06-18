@@ -1,5 +1,6 @@
 package net.twerion.armada.scheduler.queue;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
@@ -68,7 +69,7 @@ public final class ArmadaApiUnscheduledShipQueue implements UnscheduledShipQueue
     // The isPresent() call is used because we have to complete the future
     // exceptionally if there is no ship.
     if (!ship.isPresent()) {
-      future.completeExceptionally(NoUnscheduledShipException.create());
+      future.completeExceptionally(new NoSuchElementException());
       return;
     }
     future.complete(ship.get());

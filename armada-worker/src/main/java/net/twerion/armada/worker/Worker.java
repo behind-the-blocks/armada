@@ -1,4 +1,7 @@
 package net.twerion.armada.worker;
 
-public class Worker {
+public final class Worker {
+  private Worker() {}
+
+
 }
