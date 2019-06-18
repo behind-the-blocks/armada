@@ -1,16 +1,25 @@
-plugins {
-    id 'java'
-}
-
 group 'net.twerion.armada'
 version '1.0.0'
 
-sourceCompatibility = 1.8
+apply plugin: 'java'
 
 repositories {
-    mavenCentral()
+  google()
+  mavenCentral()
+  mavenLocal()
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+  implementation project(':armada')
+  implementation project(':armada-apiserver')
+  implementation project(':armada-common')
+  implementation project(':armada-scheduler')
+
+  implementation 'com.amihaiemil.web:eo-yaml:2.0.1'
+  implementation 'com.google.inject:guice:4.2.2'
+  implementation 'org.apache.logging.log4j:log4j-core:2.11.2'
+  implementation 'com.google.protobuf:protobuf-java:3.5.1'
+  implementation 'io.grpc:grpc-stub:1.1.2'
+
+  testImplementation 'junit:junit:4.12'
 }
