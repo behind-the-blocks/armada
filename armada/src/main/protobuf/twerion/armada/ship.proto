@@ -1,42 +1,27 @@
 syntax = "proto3";
 
+package twerion.armada;
+
 option java_package = "net.twerion.armada";
 option java_multiple_files = true;
 
 import "twerion/armada/filter.proto";
 import "twerion/armada/resources.proto";
-import "twerion/armada/asset.proto";
-
-enum ShipLifecycleStage {
-  CREATED = 0;
-  SCHEDULED = 1;
-  STARTING = 2;
-  RUNNING = 3;
-  STOPPING = 4;
-  STOPPED = 5;
-}
+import "twerion/armada/ship_blueprint.proto";
 
 message Ship {
-  string id = 1;
-  oneof blueprints {
-    ShipBlueprint blueprint = 2;
-    string blueprint_id = 3;
+  enum LifecycleStage {
+    CREATED = 0;
+    SCHEDULED = 1;
+    STARTING = 2;
+    RUNNING = 3;
+    STOPPING = 4;
+    STOPPED = 5;
   }
-  ShipLifecycleStage lifecycle_stage = 4;
-  string custom_status = 5;
-  string node_id = 6;
-}
-
-message ShipBlueprint {
   string id = 1;
-  Cargo cargo = 2;
-  LabelSet labels = 3;
-  LabelSelectorSet node_selectors = 4;
-  ResourceRequirements required_resources = 5;
-}
-
-message Cargo {
-  string app_name = 1;
-  LabelSet labels = 2;
-  repeated Asset assets = 3;
+  string blueprint_id = 2;
+  ShipBlueprint blueprint = 3;
+  string node_id = 4;
+  string custom_stage = 5;
+  LifecycleStage lifecycle_stage = 6;
 }

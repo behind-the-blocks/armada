@@ -9,7 +9,6 @@ import org.apache.logging.log4j.Logger;
 import net.twerion.armada.Node;
 import net.twerion.armada.Ship;
 import net.twerion.armada.ShipBlueprint;
-import net.twerion.armada.ShipLifecycleStage;
 import net.twerion.armada.scheduler.filter.FilteredShipBlueprint;
 import net.twerion.armada.scheduler.filter.HostFilter;
 import net.twerion.armada.scheduler.queue.UnscheduledShipQueue;
@@ -50,7 +49,7 @@ public final class Scheduler {
   }
 
   public void schedule(Ship ship) {
-    if (ship.getLifecycleStage() != ShipLifecycleStage.SCHEDULED) {
+    if (ship.getLifecycleStage() != Ship.LifecycleStage.SCHEDULED) {
       return;
     }
     Optional<Node> foundHost = findHost(ship.getBlueprint());

@@ -1,18 +1,24 @@
 syntax = "proto3";
 
+package twerion.armada;
+
 option java_package = "net.twerion.armada";
 option java_multiple_files = true;
 
 import "twerion/armada/filter.proto";
-import "twerion/armada/resources.proto";
 
 message Node {
+  enum Status {
+    ACTIVE = 0;
+    PASSIVE = 1;
+    OFFLINE = 2;
+  }
   string id = 1;
   string cluster_id = 2;
-  LabelSet labels = 3;
-  LabelSelectorSet ship_selectors = 4;
-  Resources resources = 5;
-  NodeAssetStoreView local_asset_store_view = 6;
+  Status status = 3;
+  LabelSet labels = 4;
+  LabelSelectorSet ship_selectors = 5;
+  // NodeAssetStoreView local_asset_store_view = 7;
 }
 
 message NodeAssetStoreView {

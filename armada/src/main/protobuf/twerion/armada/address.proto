@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package twerion.armada;
+
+option java_package = "net.twerion.armada";
+option java_multiple_files = true;
+
+message Address {
+  string ip_address = 1;
+  int32 port = 2;
+}

@@ -1,55 +1,65 @@
 syntax = "proto3";
 
+package twerion.armada.api;
+
 option java_package = "net.twerion.armada.api";
 option java_multiple_files = true;
 
 import "twerion/armada/ship.proto";
+import "twerion/armada/filter.proto";
 
-message ListShipsByLifecycleStageRequest {
-  ShipLifecycleStage lifecycle_stage = 1;
-  int32 limit = 2;
+message CreateShipRequest {
+  string blueprint_id = 1;
 }
 
-message ListShipsResponse {
+message CreateShipResponse {
+  string ship_id = 1;
+}
+
+message DeleteShipRequest {
+  string ship_id = 1;
+}
+
+message DeleteShipResponse {
+}
+
+message UpdateShipRequest {
+  string ship_id = 1;
+  string host_node_id = 2;
+  Ship.LifecycleStage next_lifecycle_stage = 3;
+}
+message UpdateShipResponse {
+}
+
+message FindShipRequest {
+  string ship_id = 1;
+}
+
+message FindShipResponse {
+  Ship ship = 1;
+}
+
+message ListShipRequest {
+  int64 limit = 1;
+  Ship.LifecycleStage lifecycle_stage = 2;
+}
+
+message ListShipResponse {
   repeated Ship ships = 1;
 }
 
-// Only updates the ships lifecycle stage if the 'current' stage matches the
-// actual current state of the ship. This is done to prevent nodes with stale
-// data from updating the ship.
-message UpdateShipLifecycleStageRequest {
-  string ship_id = 1;
-  ShipLifecycleStage current = 2;
-  ShipLifecycleStage next = 3;
-}
-
-
-message UpdateShipLifecycleStageResponse {
-  ShipLifecycleStage new_stage = 1;
-  oneof status {
-    bool success = 2;
-    string error_code = 3;
-  }
-}
-
-message RescheduleShipRequest {
-  string ship_id = 1;
-}
-
-message RescheduleShipResponse {
-  bool ship_discarded = 1;
-  oneof status {
-    bool success = 2;
-    string error_code = 3;
-  }
-}
-
 service ShipService {
-  rpc Reschedule(RescheduleShipRequest) returns (RescheduleShipResponse) {}
-
-  rpc UpdateShipLifecycleStage(UpdateShipLifecycleStageRequest)
-    returns (UpdateShipLifecycleStageResponse) {}
-
-  rpc ListShipsByLifecycleStage(ListShipsByLifecycleStageRequest)
-   returns (ListShipsResponse) {}
+  // Creates a new ship and adds it to the schedulers queue.
+  rpc Create(CreateShipRequest) returns (CreateShipResponse) {}
+  // Deletes an existing ship. If the ship is currently in the schedulers
+  // queue, it is removed. If it is already running, the ApiServer will
+  // find the ships host and delete the host from the nodes path of started
+  // ships in Zookeeper, triggering a watch. Since the node listens for
+  // deletes in its path of started ships, it will automatically delete it.
+  // If the ship is already stopped or currently stopping, it will be removed
+  // from the KeyValueStore.
+  rpc Delete(DeleteShipRequest) returns (DeleteShipResponse) {}
+  rpc Update(UpdateShipRequest) returns (UpdateShipResponse) {}
+  rpc Find(FindShipRequest) returns (FindShipResponse) {}
+  rpc List(ListShipRequest) returns (ListShipResponse) {}
 }

@@ -1,72 +1,64 @@
 syntax = "proto3";
 
+package twerion.armada.api;
+
 option java_package = "net.twerion.armada.api";
 option java_multiple_files = true;
 
 import "twerion/armada/node.proto";
 import "twerion/armada/ship.proto";
 import "twerion/armada/filter.proto";
+import "twerion/armada/address.proto";
 
-message FindNodeByIdRequest {}
-
-message FindNodeResponse {}
-
-message ListNodesRequest {
-  int32 limit = 1;
+message CreateNodeRequest {
+  string id = 1;
+  Address address = 2;
+  Node.Status initial_status = 3;
 }
 
-message ListNodesByLabelRequest {
-  LabelSelector selector = 1;
+message CreateNodeResponse {
+  string cluster_id = 1;
+}
+
+message DeleteNodeRequest {
+  enum CleanupPolicy {
+    STOP_RUNNING_SHIPS = 0;
+    CLEAR_SCHEDULED_SHIPS = 1;
+  }
+  string node_id = 1;
+  repeated CleanupPolicy cleanup_policies = 2;
+}
+
+message DeleteNodeResponse {}
+
+message UpdateNodeRequest {
+  string node_id = 1;
+  Node.Status new_status = 2;
+}
+
+message UpdateNodeResponse {}
+
+message FindNodeRequest {
+  string node_id = 1;
+}
+
+message FindNodeResponse {
+  Node node = 1;
+}
+
+message ListNodesRequest {
+  Node.Status status = 1;
+  LabelSelector label_selector = 2;
 }
 
 message ListNodesResponse {
   repeated Node nodes = 1;
 }
 
-message ListShipsOfNodeRequest {
-  ShipLifecycleStage lifecycle_stage = 1;
-  int64 limit = 2;
-}
-
-message ListShipsOfNodeResponse {
-  repeated Ship ships = 1;
-}
-
-message CreateNodeRequest {
-
-}
-
-message CreateNodeResponse {
-
-}
-
-message DeleteNodeRequest {
-
-}
-
-message DeleteNodeResponse {
-
-}
-
-message NodeUpdateRequest {
-  LabelSelector selector = 1;
-}
-
-message NodeUpdateResponse {}
-
 service NodeService {
-
-  rpc ListShipsOfNode(ListShipsOfNodeRequest) returns (ListShipsOfNodeResponse) {}
-
-  rpc Delete(DeleteNodeRequest) returns (DeleteNodeResponse) {}
-
-  rpc Create(CreateNodeRequest) returns (CreateNodeResponse) {}
-
-  rpc List(ListNodesRequest) returns (ListNodesResponse) {}
-
-  rpc ListByLabel(ListNodesByLabelRequest) returns (ListNodesResponse) {}
-
-  rpc FindById(FindNodeByIdRequest) returns (FindNodeResponse) {}
-
-  rpc ListenForUpdates(NodeUpdateRequest) returns (stream NodeUpdateResponse) {}
+  rpc Create(CreateNodeRequest) returns (CreateNodeResponse);
+  rpc Delete(DeleteNodeRequest) returns (DeleteNodeResponse);
+  rpc Update(UpdateNodeRequest) returns (UpdateNodeResponse);
+  rpc Find(FindNodeRequest) returns (FindNodeResponse);
+  rpc List(ListNodesRequest) returns (ListNodesResponse);
 }
