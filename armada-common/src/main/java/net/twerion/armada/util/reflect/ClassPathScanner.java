@@ -15,8 +15,13 @@ public final class ClassPathScanner implements AutoCloseable {
 
   public <E> Stream<Class<E>> findSubTypes(Class<E> superType) {
     return loadedClasses.stream()
+      .filter(this::isNoInterface)
       .filter(superType::isAssignableFrom)
       .map(this::unsafeTypeCast);
+  }
+
+  private boolean isNoInterface(Class<?> type) {
+    return !type.isInterface();
   }
 
   private <E> Class<E> unsafeTypeCast(Class<?> type) {
