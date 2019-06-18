@@ -3,6 +3,7 @@ package net.twerion.armada.scheduler;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import net.twerion.armada.scheduler.queue.UnscheduledShipQueue;
 import org.apache.logging.log4j.Logger;
 
 import net.twerion.armada.Node;
@@ -23,6 +24,7 @@ public final class Scheduler {
   private HostLister hostLister;
   private HostPrioritizer prioritizer;
   private HostShipAssigner shipAssigner;
+  private UnscheduledShipQueue queue;
   private SchedulerConfig config;
 
   Scheduler(
@@ -31,12 +33,14 @@ public final class Scheduler {
       HostLister lister,
       SchedulerConfig config,
       HostPrioritizer prioritizer,
+      UnscheduledShipQueue queue,
       HostShipAssigner shipAssigner
   ) {
     this.logger = logger;
     this.filter = filter;
     this.config = config;
     this.hostLister = lister;
+    this.queue = queue;
     this.shipAssigner = shipAssigner;
     this.prioritizer = prioritizer;
   }
@@ -62,8 +66,7 @@ public final class Scheduler {
 
   private void noHostFound(Ship ship) {
     logger.info("No host found for ship {}", ship);
-    // TODO(merlinosayimwen): Reschedule ship in a way that
-    // makes it not pop up in the schedulers queue soon.
+    queue.rescheduleAsync(ship);
   }
 
   public Optional<Node> findHost(ShipBlueprint blueprint) {
