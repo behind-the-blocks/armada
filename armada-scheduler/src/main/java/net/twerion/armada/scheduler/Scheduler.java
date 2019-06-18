@@ -3,7 +3,7 @@ package net.twerion.armada.scheduler;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import net.twerion.armada.scheduler.queue.UnscheduledShipQueue;
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import net.twerion.armada.Node;
@@ -12,6 +12,8 @@ import net.twerion.armada.ShipBlueprint;
 import net.twerion.armada.ShipLifecycleStage;
 import net.twerion.armada.scheduler.filter.FilteredShipBlueprint;
 import net.twerion.armada.scheduler.filter.HostFilter;
+import net.twerion.armada.scheduler.queue.UnscheduledShipQueue;
+import net.twerion.armada.scheduler.reschedule.ShipRescheduler;
 import net.twerion.armada.scheduler.host.HostCandidate;
 import net.twerion.armada.scheduler.host.HostLister;
 import net.twerion.armada.scheduler.host.HostShipAssigner;
@@ -19,28 +21,30 @@ import net.twerion.armada.scheduler.host.PrioritizedHostCandidate;
 import net.twerion.armada.scheduler.priority.HostPrioritizer;
 
 public final class Scheduler {
-  private Logger logger;
+  private static final Logger LOG = LogManager.getLogger(Scheduler.class);
+
   private HostFilter filter;
   private HostLister hostLister;
   private HostPrioritizer prioritizer;
   private HostShipAssigner shipAssigner;
   private UnscheduledShipQueue queue;
+  private ShipRescheduler shipRescheduler;
   private SchedulerConfig config;
 
   Scheduler(
-      Logger logger,
       HostFilter filter,
       HostLister lister,
       SchedulerConfig config,
       HostPrioritizer prioritizer,
       UnscheduledShipQueue queue,
+      ShipRescheduler shipRescheduler,
       HostShipAssigner shipAssigner
   ) {
-    this.logger = logger;
     this.filter = filter;
     this.config = config;
     this.hostLister = lister;
     this.queue = queue;
+    this.shipRescheduler = shipRescheduler;
     this.shipAssigner = shipAssigner;
     this.prioritizer = prioritizer;
   }
@@ -60,13 +64,13 @@ public final class Scheduler {
   }
 
   private void assignShipToHost(Node host, Ship ship) {
-    logger.info("Assigning ship {} to host {}", ship.getId(), host.getId());
+    LOG.info("Assigning ship {} to host {}", ship.getId(), host.getId());
     shipAssigner.assign(host, ship);
   }
 
   private void noHostFound(Ship ship) {
-    logger.info("No host found for ship {}", ship);
-    queue.rescheduleAsync(ship);
+    LOG.info("No host found for ship {}", ship);
+    shipRescheduler.rescheduleAsync(ship);
   }
 
   public Optional<Node> findHost(ShipBlueprint blueprint) {

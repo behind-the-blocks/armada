@@ -8,11 +8,6 @@ import java.util.concurrent.Executor;
 
 public interface UnscheduledShipQueue {
 
-  void reschedule(Ship ship);
-
-  CompletableFuture<?> rescheduleAsync(Ship ship);
-
-  CompletableFuture<?> rescheduleAsync(Ship ship, Executor executor);
 
   Optional<Ship> pull();
 

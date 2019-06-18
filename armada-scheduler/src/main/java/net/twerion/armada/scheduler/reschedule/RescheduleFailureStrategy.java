@@ -1,4 +1,4 @@
-package net.twerion.armada.scheduler.queue;
+package net.twerion.armada.scheduler.reschedule;
 
 import net.twerion.armada.Ship;
 
