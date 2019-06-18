@@ -10,7 +10,9 @@ message FindNodeByIdRequest {}
 
 message FindNodeResponse {}
 
-message ListAllNodesRequest { }
+message ListNodesRequest {
+  int32 limit = 1;
+}
 
 message ListNodesByLabelRequest {
   LabelSelector selector = 1;
@@ -48,7 +50,7 @@ service NodeService {
 
   rpc Create(CreateNodeRequest) returns (CreateNodeResponse) {}
 
-  rpc ListAll(ListAllNodesRequest) returns (ListNodesResponse) {}
+  rpc List(ListNodesRequest) returns (ListNodesResponse) {}
 
   rpc ListByLabel(ListNodesByLabelRequest) returns (ListNodesResponse) {}
 
