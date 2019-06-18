@@ -8,8 +8,8 @@ import java.util.function.Consumer;
 import javax.annotation.Nullable;
 
 import com.google.common.base.Charsets;
-
 import com.google.protobuf.InvalidProtocolBufferException;
+
 import io.etcd.jetcd.KV;
 import io.etcd.jetcd.kv.GetResponse;
 import io.etcd.jetcd.ByteSequence;
@@ -19,10 +19,14 @@ import net.twerion.armada.LabelSet;
 import net.twerion.armada.Node;
 import net.twerion.armada.api.KeyPath;
 import net.twerion.armada.api.etcd.KeyValues;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 // Currently no transactions are used
 @SuppressWarnings("UnstableApiUsage")
 public final class EtcdNodeRepository implements NodeRepository {
+  private static final Logger LOG = LogManager.getLogger(EtcdNodeRepository.class);
+
   private KV store;
   private Executor executor;
   private KeyPath basePath;
@@ -100,52 +104,62 @@ public final class EtcdNodeRepository implements NodeRepository {
 
     Node.Builder node = Node.newBuilder();
     Map<ByteSequence, ByteSequence> entries = KeyValues.toMap(response.getKvs());
-
+    // The clusterId is required. It verifies that the node actually exists.
     ByteSequence clusterId = entries.get(clusterIdPath(path));
     if (clusterId == null) {
       future.completeExceptionally(InvalidNodeException.missingField("clusterId"));
       return;
     }
 
-    node.setClusterId(clusterId.toString(Charsets.UTF_8));
-    ByteSequence status = entries.get(statusPath(path));
-    if (status == null) {
-      node.setStatus(Node.Status.OFFLINE);
-    } else {
-      byte[] statusBytes = status.getBytes();
-      if (statusBytes.length == 1) {
-        node.setStatusValue(status.getBytes()[0]);
-      } else {
-        node.setStatus(Node.Status.OFFLINE);
-      }
-    }
-
-    ByteSequence shipSelector = entries.get(shipSelectorPath(path));
-    if (shipSelector == null) {
-      node.setShipSelectors(LabelSelectorSet.newBuilder().build());
-    } else {
-      LabelSelectorSet decoded = tryDecodeLabelSelectorSet(shipSelector);
-      if (decoded == null) {
-        node.setShipSelectors(LabelSelectorSet.newBuilder().build());
-      } else {
-        node.setShipSelectors(decoded);
-      }
-    }
-
-    ByteSequence labels = entries.get(labelsPath(path));
-    if (labels == null) {
-      node.setLabels(LabelSet.newBuilder());
-    } else {
-      LabelSet decoded = tryDecodeLabelSet(labels);
-      if (decoded == null) {
-        node.setLabels(LabelSet.newBuilder().build());
-      } else {
-        node.setLabels(decoded);
-      }
-    }
-
+    decodeAndSetStatus(entries.get(statusPath(basePath)), node);
+    decodeAndSetLabels(entries.get(labelsPath(basePath)), node);
+    decodeAndSetShipSelector(entries.get(shipSelectorPath(basePath)), node);
     future.complete(node.build());
   }
+
+  private void decodeAndSetStatus(
+    @Nullable ByteSequence status, Node.Builder nodeBuilder) {
+
+    if (status == null) {
+      nodeBuilder.setStatus(Node.Status.OFFLINE);
+      return;
+    }
+    byte[] statusBytes = status.getBytes();
+    if (statusBytes.length == 1) {
+      nodeBuilder.setStatusValue(status.getBytes()[0]);
+      return;
+    }
+    nodeBuilder.setStatus(Node.Status.OFFLINE);
+  }
+
+  private void decodeAndSetLabels(
+    @Nullable ByteSequence labels, Node.Builder nodeBuilder) {
+
+    if (labels == null) {
+      nodeBuilder.setLabels(LabelSet.newBuilder().build());
+      return;
+    }
+    LabelSet decoded = tryDecodeLabelSet(labels);
+    nodeBuilder.setLabels(decoded != null
+      ? decoded
+      : LabelSet.newBuilder().build()
+    );
+  }
+
+  private void decodeAndSetShipSelector(
+    @Nullable ByteSequence shipSelector, Node.Builder nodeBuilder) {
+
+    if (shipSelector == null) {
+      nodeBuilder.setShipSelectors(LabelSelectorSet.newBuilder().build());
+      return;
+    }
+    LabelSelectorSet decoded = tryDecodeLabelSelectorSet(shipSelector);
+    nodeBuilder.setShipSelectors(decoded != null
+      ? decoded
+      : LabelSelectorSet.newBuilder().build()
+    );
+  }
+
 
   @Nullable
   private LabelSet tryDecodeLabelSet(ByteSequence bytes) {
@@ -190,12 +204,8 @@ public final class EtcdNodeRepository implements NodeRepository {
   }
 
   @Override
-  public void delete(String nodeId) {
-    try {
-      store.delete(subPath(basePath, nodeId));
-    } catch (Exception deletionFailure) {
-
-    }
+  public CompletableFuture<?> delete(String nodeId) {
+    return null;
   }
 
   private ByteSequence bytes(byte[] bytes) {
