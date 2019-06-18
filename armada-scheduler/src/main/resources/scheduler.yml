@@ -19,11 +19,5 @@ priority:
   # class-names or 'all'.
   steps: all
 
-# Work queue
-queue:
-  zookeeper:
-    ...
-
-# List of host candidates
-candidate:
-  zookeeper:
+leaderElection:
+  enabled: true

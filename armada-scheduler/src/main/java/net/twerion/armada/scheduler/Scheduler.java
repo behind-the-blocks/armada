@@ -4,7 +4,9 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import net.twerion.armada.Node;
+import net.twerion.armada.Ship;
 import net.twerion.armada.ShipBlueprint;
+import net.twerion.armada.ShipLifecycleStage;
 import net.twerion.armada.scheduler.filter.FilteredShipBlueprint;
 import net.twerion.armada.scheduler.filter.HostFilter;
 import net.twerion.armada.scheduler.host.HostCandidate;
@@ -33,9 +35,16 @@ public final class Scheduler {
     this.bestNodeLimit = bestNodeLimit;
   }
 
+  public void schedule(Ship ship) {
+    if (ship.getLifecycleStage() != ShipLifecycleStage.SCHEDULED) {
+      return;
+    }
+  }
+
   public Optional<Node> findHost(ShipBlueprint blueprint) {
     Stream<HostCandidate> suitable = findSuitableNodes(blueprint, suitableNodeLimit);
-    Stream<HostCandidate> best = findBestNodes(suitable, blueprint, bestNodeLimit);
+    Stream<HostCandidate> best = prioritizeNodes(suitable, blueprint,
+      bestNodeLimit);
     // TODO(merlinosayimwen): Use round robin?
     return best.findAny().map(HostCandidate::node);
   }
@@ -49,7 +58,7 @@ public final class Scheduler {
       .limit(limit);
   }
 
-  private Stream<HostCandidate> findBestNodes(
+  private Stream<HostCandidate> prioritizeNodes(
     Stream<HostCandidate> nodes, ShipBlueprint blueprint, int limit) {
 
     return nodes
