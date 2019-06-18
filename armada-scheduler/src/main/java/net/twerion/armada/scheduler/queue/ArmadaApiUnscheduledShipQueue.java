@@ -80,7 +80,7 @@ public final class ArmadaApiUnscheduledShipQueue implements UnscheduledShipQueue
   public Optional<Ship> pull() {
     ListShipsByLifecycleStageRequest request = ListShipsByLifecycleStageRequest
       .newBuilder()
-      .setLifecycleStage(ShipLifecycleStage.SCHEDULED)
+      .setLifecycleStage(ShipLifecycleStage.CREATED)
       .setLimit(1)
       .build();
 
