@@ -17,8 +17,7 @@ public final class ResourceFilterTest {
 
   @Before
   public void createFilter() {
-    Logger logger = LogManager.getLogger(ResourceFilter.class);
-    this.filter = new ResourceFilter(logger);
+    this.filter = new ResourceFilter();
   }
 
   @Test
