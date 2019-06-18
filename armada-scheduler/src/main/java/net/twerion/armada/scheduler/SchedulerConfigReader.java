@@ -1,19 +1,15 @@
 package net.twerion.armada.scheduler;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-import com.google.inject.Guice;
 import com.google.inject.Injector;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.amihaiemil.eoyaml.Yaml;
 import com.amihaiemil.eoyaml.YamlMapping;
 import com.amihaiemil.eoyaml.YamlSequence;
 
@@ -104,16 +100,5 @@ public final class SchedulerConfigReader {
 
   private Collection<String> readHostFilterClassNameList() {
     return Collections.emptyList();
-  }
-
-  public static void main(String[] arguments) throws IOException {
-    YamlMapping rootMapping =
-      Yaml.createYamlInput(
-        SchedulerConfigReader.class.getClassLoader().getResourceAsStream("scheduler.yml")
-      ).readYamlMapping();
-    SchedulerConfigReader reader = new SchedulerConfigReader(
-      LogManager.getLogger("test"), Guice.createInjector(), rootMapping);
-
-    reader.createHostFilter();
   }
 }
