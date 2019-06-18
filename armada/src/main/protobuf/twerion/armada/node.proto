@@ -6,6 +6,7 @@ option java_package = "net.twerion.armada";
 option java_multiple_files = true;
 
 import "twerion/armada/filter.proto";
+import "twerion/armada/address.proto";
 
 message Node {
   enum Status {
@@ -17,6 +18,7 @@ message Node {
   string cluster_id = 2;
   Status status = 3;
   LabelSet labels = 4;
+  Address address = 5;
   LabelSelectorSet ship_selectors = 5;
   // NodeAssetStoreView local_asset_store_view = 7;
 }
