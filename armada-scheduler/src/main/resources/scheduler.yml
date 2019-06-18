@@ -19,5 +19,12 @@ priority:
   # class-names or 'all'.
   steps: all
 
-leaderElection:
-  enabled: true
+startLatch:
+  leaderElection:
+    zookeeper:
+      electionPath: 'armada/scheduler/leader'
+      connectionString: localhost
+      retryPolicy:
+        exponentialBackoff:
+          timeout: 3000
+          retries: 3
