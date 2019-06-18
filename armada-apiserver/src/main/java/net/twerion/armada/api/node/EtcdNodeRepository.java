@@ -62,7 +62,6 @@ public final class EtcdNodeRepository implements NodeRepository {
     store.put(shipSelectorPath(path), bytes(shipSelector));
   }
 
-
   @Override
   public CompletableFuture<Node> find(String nodeId) {
     KeyPath path = basePath.subPath(nodeId);
@@ -72,9 +71,7 @@ public final class EtcdNodeRepository implements NodeRepository {
   }
 
   private void readNodeAndComplete(KeyPath path, CompletableFuture<Node> future) {
-
   }
-
 
   @Override
   public CompletableFuture<?> updateStatus(String nodeId, Node.Status status) {
@@ -104,6 +101,7 @@ public final class EtcdNodeRepository implements NodeRepository {
   public CompletableFuture<?> delete(String nodeId) {
     return null;
   }
+
   private static ByteSequence bytes(byte[] bytes) {
     return ByteSequence.from(bytes);
   }
