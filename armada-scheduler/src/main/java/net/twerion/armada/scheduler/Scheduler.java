@@ -11,7 +11,7 @@ import net.twerion.armada.Ship;
 import net.twerion.armada.ShipBlueprint;
 import net.twerion.armada.scheduler.filter.FilteredShipBlueprint;
 import net.twerion.armada.scheduler.filter.HostFilter;
-import net.twerion.armada.scheduler.queue.UnscheduledShipQueue;
+import net.twerion.armada.scheduler.queue.ShipQueue;
 import net.twerion.armada.scheduler.reschedule.ShipRescheduler;
 import net.twerion.armada.scheduler.host.HostCandidate;
 import net.twerion.armada.scheduler.host.HostLister;
@@ -26,7 +26,7 @@ public final class Scheduler {
   private HostLister hostLister;
   private HostPrioritizer prioritizer;
   private HostShipAssigner shipAssigner;
-  private UnscheduledShipQueue queue;
+  private ShipQueue queue;
   private ShipRescheduler shipRescheduler;
   private SchedulerConfig config;
 
@@ -35,7 +35,7 @@ public final class Scheduler {
       HostLister lister,
       SchedulerConfig config,
       HostPrioritizer prioritizer,
-      UnscheduledShipQueue queue,
+      ShipQueue queue,
       ShipRescheduler shipRescheduler,
       HostShipAssigner shipAssigner
   ) {
