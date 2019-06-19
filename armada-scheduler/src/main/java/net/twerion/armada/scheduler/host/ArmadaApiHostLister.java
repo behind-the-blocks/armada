@@ -29,7 +29,6 @@ public final class ArmadaApiHostLister implements HostLister {
   @Override
   public Stream<Node> listHostsWithLimit(int limit) {
     ListNodesRequest request = ListNodesRequest.newBuilder()
-      .setLimit(limit)
       .build();
     return request(request);
   }

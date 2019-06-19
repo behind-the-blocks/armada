@@ -25,7 +25,8 @@ public final class ResourceFilter implements HostFilter {
 
   @VisibleForTesting
   boolean canFitResources(Node node, ResourceRequirements resources) {
-    Memory nodeMemory = node.getResources().getMemory();
-    return nodeMemory.getAvailable() > resources.getBytesOfMemory();
+    // Memory nodeMemory = node.getResources().getMemory();
+    // return nodeMemory.getAvailable() > resources.getBytesOfMemory();
+    return false;
   }
 }

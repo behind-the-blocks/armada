@@ -49,7 +49,7 @@ public final class ResourceFilterTest {
 
     return Node.newBuilder()
       .setId(id)
-      .setResources(nodeResources)
+      //.setResources(nodeResources)
       .build();
   }
 }

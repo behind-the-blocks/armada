@@ -19,7 +19,7 @@
 
 /* Modified version of curators SimpleDistributedQueue. */
 
-package net.twerion.armada.scheduler.queue;
+package net.twerion.armada.util.zookeeper;
 
 import java.util.List;
 import java.util.Collection;
@@ -28,6 +28,8 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+
+import com.google.common.base.Preconditions;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -84,11 +86,14 @@ public final class ZookeeperQueue {
         .creatingParentContainersIfNeeded()
         .withMode(CreateMode.PERSISTENT_SEQUENTIAL)
         .forPath(newNodePath, data);
+      return true;
     } catch (Exception failure) {
-
+      String errorMessage = String.format(
+        "Failed created ing at path %s", newNodePath
+      );
+      LOG.error(errorMessage, failure);
       return false;
     }
-    return true;
   }
 
   public byte[] poll(long timeout, TimeUnit unit) throws Exception {
@@ -163,15 +168,16 @@ public final class ZookeeperQueue {
 
   @Nullable
   private byte[] readHeadElement() {
-  String headId = findHeadId();
+    String headId = findHeadId();
     if (headId == null) {
       return null;
     }
     String headPath = ZKPaths.makePath(path, headId);
     try {
-      return client.getData().forPath(path);
+      return client.getData().forPath(headPath);
     } catch (KeeperException.NoNodeException noSuchNode) {
       // Node has already been removed. Ignore exception...
+      LOG.debug("Failed to find head node while reading head", noSuchNode);
     } catch (Exception otherFailure) {
       String errorMessage = String.format(
         "Failed deleting the children for path %s", headPath
@@ -190,7 +196,8 @@ public final class ZookeeperQueue {
     return popHeadWithId(headId);
   }
 
-  @Nullable byte[] popHeadElementWithWatcher(Watcher watcher) {
+  @Nullable
+  byte[] popHeadElementWithWatcher(Watcher watcher) {
     String headId = findHeadIdWithWatcher(watcher);
     if (headId == null) {
       return null;
@@ -206,6 +213,7 @@ public final class ZookeeperQueue {
       return data;
     } catch (KeeperException.NoNodeException noSuchNode) {
       // Node has already been removed. Ignore exception...
+      LOG.debug("Failed to find node while popping head", noSuchNode);
     } catch (Exception otherFailure) {
       String errorMessage = String.format(
         "Failed deleting the children for path %s", headPath
@@ -271,6 +279,13 @@ public final class ZookeeperQueue {
   }
 
   private boolean isForeign(String nodeId) {
-    return nodeId.startsWith(PREFIX);
+    return !nodeId.startsWith(PREFIX);
+  }
+
+  public static ZookeeperQueue create(String path, CuratorFramework curator) {
+    Preconditions.checkNotNull(path);
+    Preconditions.checkNotNull(curator);
+    return new ZookeeperQueue(
+      curator, path, new EnsureContainers(curator, path));
   }
 }

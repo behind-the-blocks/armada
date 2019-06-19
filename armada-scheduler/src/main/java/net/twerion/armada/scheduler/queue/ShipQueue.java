@@ -32,8 +32,9 @@ public interface ShipQueue {
    * chance of being scheduled successfully.
    *
    * @param element Ship to be added to the queues tail.
+   * @return True if the element has been added to the queue.
    */
-  void addLast(Ship element);
+  boolean addLast(Ship element);
 
   /**
    * Returns the queues head element, if it is not empty.

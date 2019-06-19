@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 
+import net.twerion.armada.util.zookeeper.ZookeeperQueue;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -26,8 +27,8 @@ public final class ZookeeperShipQueue implements ShipQueue {
   }
 
   @Override
-  public void addLast(Ship element) {
-    queue.tryInsert(element.toByteArray());
+  public boolean addLast(Ship element) {
+    return queue.tryInsert(element.toByteArray());
   }
 
   @Override

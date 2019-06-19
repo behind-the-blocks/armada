@@ -19,7 +19,7 @@ message Node {
   Status status = 3;
   LabelSet labels = 4;
   Address address = 5;
-  LabelSelectorSet ship_selectors = 5;
+  LabelSelectorSet ship_selectors = 6;
   // NodeAssetStoreView local_asset_store_view = 7;
 }
 
