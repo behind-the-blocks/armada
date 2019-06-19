@@ -3,6 +3,7 @@ package net.twerion.armada.api.redis;
 import com.google.common.base.Preconditions;
 import com.google.protobuf.MessageLite;
 import net.twerion.armada.Ship;
+import net.twerion.armada.api.KeyPath;
 
 import java.nio.ByteBuffer;
 import java.util.Map;
@@ -62,8 +63,12 @@ public final class RedisObjectSchema<T> {
 
   private Map<String, Field> fields;
 
-  void put(PutMapCommand<String, ByteBuffer> store) {
-    Ship ship = null;
+  public void put(KeyPath path, T value, PutMapCommand<String,
+                  ByteBuffer> store) {
+  }
+
+  public T get(KeyPath path, GetMapCommand<String, ByteBuffer> store) {
+    return null;
   }
 
   public static <T> Builder<T> newBuilder(Class<T> type) {
