@@ -25,7 +25,7 @@ public class DeleteShipOnRescheduleFailure implements RescheduleFailureStrategy 
     } catch (Exception rpcFailure) {
       String errorMessage = String.format(
         "Could not delete unscheduled ship %s", ship.getId()
-        );
+      );
       LOG.error(errorMessage, rpcFailure);
       LOG.error("Ship will no longer be scheduled and may create a leak");
     }
