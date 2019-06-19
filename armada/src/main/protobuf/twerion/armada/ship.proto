@@ -17,6 +17,7 @@ message Ship {
     RUNNING = 3;
     STOPPING = 4;
     STOPPED = 5;
+    UNKNOWN = 6; // Ships are deleted once they have this stage
   }
   string id = 1;
   string blueprint_id = 2;
