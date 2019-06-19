@@ -18,6 +18,7 @@ message CreateShipResponse {
 
 message DeleteShipRequest {
   string ship_id = 1;
+  bool unchecked = 2;
 }
 
 message DeleteShipResponse {
