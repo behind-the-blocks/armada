@@ -10,8 +10,9 @@ gameservers.
 
 ## Use of Zookeeper
 
-Unscheduled ships are added to a Zookeeper Queue under path `/armada/scheduler/queue`.
-The *ApiServer* will mostly just write to Zookeeper and use *Etcd* for more 
+Unscheduled ships are added to a Zookeeper Queue under path 
+`/armada/scheduler/queue`. The *ApiServer* will mostly just write to 
+Zookeeper and use *Etcd* for more 
 frequent lookups. The main objective is to keep the amount of *Queries per 
 Second* low. After the scheduler assigned a host to a ship, the ship is added
 to the hosts queue of unstarted ships, which is under path 

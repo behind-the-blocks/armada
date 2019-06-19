@@ -6,7 +6,6 @@ include 'armada-apiserver'
 include 'armada-client'
 include 'armada-common'
 include 'armada-controller'
-include 'armada-recipe'
 include 'armada-scheduler'
 include 'armada-worker'
 
