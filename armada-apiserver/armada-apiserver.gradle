@@ -25,7 +25,7 @@ dependencies {
   implementation project(':armada')
   implementation project(':armada-common')
 
-  implementation 'io.etcd:jetcd-core:0.3.0'
+  implementation 'io.lettuce:lettuce-core:5.1.7.RELEASE'
 
   implementation 'com.google.inject:guice:4.2.2'
   implementation 'com.google.guava:guava:28.0-jre'

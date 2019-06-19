@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package twerion.armada.api;
+
+option java_package = "net.twerion.armada.api";
+option java_multiple_files = true;
+
+import "twerion/armada/resources.proto";
+
+message ReportStatisticsRequest {
+  string node_id = 1;
+  Resources resources = 2;
+}
+
+message ReportStatisticsResponse {}
+
+message GetStatisticsResponse {
+  string node_id = 1;
+}
+
+message GetStatisticsRequest {
+  enum Code {
+    NO_SUCH_NODE = 0;
+    NO_STATISTICS = 1;
+    FOUND_STATISTICS = 2;
+  }
+  Code code = 1;
+  Resources resources = 2;
+
+}
+
+service MonitoringService {
+  rpc ReportStatistics(ReportStatisticsRequest) returns (ReportStatisticsResponse);
+  rpc GetStatistics(GetStatisticsRequest) returns (GetStatisticsResponse);
+}

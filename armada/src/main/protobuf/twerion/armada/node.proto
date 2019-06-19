@@ -14,6 +14,7 @@ message Node {
     ACTIVE = 0;
     PASSIVE = 1;
     OFFLINE = 2;
+    UNKNOWN = 3;
   }
   string id = 1;
   string cluster_id = 2;
@@ -22,9 +23,14 @@ message Node {
   Address address = 5;
   LabelSelectorSet ship_selectors = 6;
   Resources resources = 7;
+  NodeAppStarterSet app_starters = 8;
   // NodeAssetStoreView local_asset_store_view = 8;
 }
 
 message NodeAssetStoreView {
   repeated string asset_ids = 1;
+}
+
+message NodeAppStarterSet {
+  repeated string app_starter_ids = 1;
 }
