@@ -1,4 +1,4 @@
-package net.twerion.armada.worker.queue;
+package net.twerion.armada.worker.work;
 
 import java.util.Collection;
 import java.util.Optional;

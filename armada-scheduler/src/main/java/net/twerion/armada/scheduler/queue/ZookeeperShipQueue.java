@@ -6,11 +6,11 @@ import javax.annotation.Nullable;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 
-import net.twerion.armada.util.zookeeper.ZookeeperQueue;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import net.twerion.armada.Ship;
+import net.twerion.armada.util.zookeeper.ZookeeperQueue;
 
 public final class ZookeeperShipQueue implements ShipQueue {
   private static final Logger LOG = LogManager.getLogger(ZookeeperShipQueue.class);

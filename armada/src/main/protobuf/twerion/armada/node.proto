@@ -7,6 +7,7 @@ option java_multiple_files = true;
 
 import "twerion/armada/filter.proto";
 import "twerion/armada/address.proto";
+import "twerion/armada/resources.proto";
 
 message Node {
   enum Status {
@@ -20,7 +21,8 @@ message Node {
   LabelSet labels = 4;
   Address address = 5;
   LabelSelectorSet ship_selectors = 6;
-  // NodeAssetStoreView local_asset_store_view = 7;
+  Resources resources = 7;
+  // NodeAssetStoreView local_asset_store_view = 8;
 }
 
 message NodeAssetStoreView {
