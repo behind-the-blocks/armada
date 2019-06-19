@@ -7,4 +7,6 @@ import java.util.concurrent.CompletableFuture;
 public interface ShipRepository {
 
   CompletableFuture<?> create(Ship ship);
+
+  CompletableFuture<?> updateLifecycleStage(String shipId, Ship.LifecycleStage stage);
 }

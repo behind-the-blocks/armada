@@ -1,0 +1,10 @@
+apiserver:
+  store:
+    zookeeper:
+      schedulerPath: '/armada/scheduler'
+      connectionString: localhost
+      retryPolicy:
+        exponentialBackoff:
+          timeout: 3000
+          retries: 3
+    redis:

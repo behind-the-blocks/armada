@@ -19,7 +19,7 @@ priority:
 startLatch:
   leaderElection:
     zookeeper:
-      electionPath: 'armada/scheduler/leader'
+      electionPath: '/armada/scheduler/leader'
       connectionString: localhost
       retryPolicy:
         exponentialBackoff:
