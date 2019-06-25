@@ -28,20 +28,46 @@ public final class ZookeeperResourceStoreConfig {
     this.retryPolicy = retryPolicy;
   }
 
+  /**
+   * The amount of time that a resource entry will life in zookeeper. This
+   * value should be higher than the advisor's cycle-rate to ensure that small
+   * timeouts in the advisor don't lead to the scheduler or any other component
+   * missing to get the nodes resources. The nodes created by the advisor are
+   * ephemeral, meaning that they are deleted once the advisor's zookeeper
+   * connection closes.
+   *
+   * @return Lifetime of nodes created by the advisor.
+   */
   public long timeToLife() {
-    return timeToLife;
+    return this.timeToLife;
   }
 
+  /**
+   * Path to the resource stores node, that may include a placeholder for the
+   * nodes id (${node_id}). The client uses this path to create new zookeeper
+   * nodes, containing resource stats of the locale machine.
+   */
   public String pathFormat() {
-    return pathFormat;
+    return this.pathFormat;
   }
 
+  /**
+   * Connection string used to establish a Zookeeper connection.
+   */
   public String connectionString() {
-    return connectionString;
+    return this.connectionString;
   }
 
+  /**
+   * The policy that the Zookeeper client is using the retry a failed
+   * connection attempt. The implementation should normally be a forever-retry,
+   * otherwise the advisor process may be killed on a number of failed attempts,
+   * allowing systemd to schedule a new advisor process to be spawned.
+   *
+   * @return Strategy to retry failed connection attempts.
+   */
   public RetryPolicy retryPolicy() {
-    return retryPolicy;
+    return this.retryPolicy;
   }
 
   public static Builder newBuilder() {

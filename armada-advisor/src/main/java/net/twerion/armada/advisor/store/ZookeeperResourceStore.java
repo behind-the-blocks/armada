@@ -10,6 +10,7 @@ import java.util.concurrent.CompletableFuture;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import org.apache.zookeeper.CreateMode;
 import org.apache.curator.framework.CuratorFramework;
 
 import net.twerion.armada.Resources;
@@ -43,29 +44,6 @@ public final class ZookeeperResourceStore implements ResourceStore {
   }
 
   @Override
-  public void store(Resources resources) {
-    String path = path();
-    byte[] encodedResources = resources.toByteArray();
-    try {
-      curator.create()
-        .orSetData()
-        .withTtl(config.timeToLife())
-        .creatingParentContainersIfNeeded()
-        .forPath(path, encodedResources);
-    } catch (Exception creationFailure) {
-      String errorMessage = String.format("Failed writing resource to path %s", path);
-      LOG.error(errorMessage, creationFailure);
-    }
-  }
-
-  private String path() {
-    return config.pathFormat().replace(
-      ZookeeperResourceStoreConfig.PATH_NODE_ID_PLACEHOLDER,
-      nodeDescriptor.id()
-    );
-  }
-
-  @Override
   public CompletableFuture<?> storeAsync(Resources resources, Executor executor) {
     CompletableFuture<?> completer = new CompletableFuture<>();
     Runnable createAndComplete = () -> {
@@ -79,5 +57,29 @@ public final class ZookeeperResourceStore implements ResourceStore {
   @Override
   public CompletableFuture<?> storeAsync(Resources resources) {
     return storeAsync(resources,  fallbackExecutor);
+  }
+
+  @Override
+  public void store(Resources resources) {
+    String path = path();
+    byte[] encodedResources = resources.toByteArray();
+    try {
+      curator.create()
+        .orSetData()
+        .withTtl(config.timeToLife())
+        .creatingParentContainersIfNeeded()
+        .withMode(CreateMode.EPHEMERAL)
+        .forPath(path, encodedResources);
+    } catch (Exception creationFailure) {
+      String errorMessage = String.format("Failed writing resource to path %s", path);
+      LOG.error(errorMessage, creationFailure);
+    }
+  }
+
+  private String path() {
+    return config.pathFormat().replace(
+      ZookeeperResourceStoreConfig.PATH_NODE_ID_PLACEHOLDER,
+      nodeDescriptor.id()
+    );
   }
 }
