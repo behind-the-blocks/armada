@@ -5,23 +5,41 @@
 package net.twerion.armada.advisor;
 
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.Semaphore;
 
 import javax.inject.Inject;
 
+import com.google.inject.Provider;
+import net.twerion.armada.advisor.analysis.AnalysisFactory;
+import net.twerion.armada.advisor.analysis.ResourceAdvisor;
+import net.twerion.armada.advisor.store.ResourceStoreFactory;
+import net.twerion.armada.advisor.system.SystemInformationCollector;
 import net.twerion.armada.util.concurrent.CyclicRunner;
 import net.twerion.armada.util.concurrent.ExecutedCyclicRunner;
 
 public final class AdvisorFactory {
   private AdvisorConfig config;
+  private AnalysisFactory analysisFactory;
+  private ResourceAdvisor resourceAdvisor;
+  private ResourceStoreFactory resourceStoreFactory;
   private ScheduledExecutorService executorService;
+  private SystemInformationCollector informationCollector;
 
   @Inject
   private AdvisorFactory(
       AdvisorConfig config,
-      ScheduledExecutorService executorService
+      AnalysisFactory analysisFactory,
+      ResourceStoreFactory resourceStoreFactory,
+      ResourceAdvisor resourceAdvisor,
+      ScheduledExecutorService executorService,
+      SystemInformationCollector informationCollector
   ) {
     this.config = config;
+    this.resourceAdvisor = resourceAdvisor;
+    this.analysisFactory = analysisFactory;
     this.executorService = executorService;
+    this.resourceStoreFactory = resourceStoreFactory;
+    this.informationCollector = informationCollector;
   }
 
   public Advisor createRunningAdvisor() {
@@ -31,7 +49,13 @@ public final class AdvisorFactory {
   }
 
   private Advisor createAdvisor() {
-    return null; // return new Advisor();
+    return new Advisor(
+      new Semaphore(1),
+      resourceStoreFactory.createResourceStore(),
+      resourceAdvisor,
+      analysisFactory,
+      informationCollector
+    );
   }
 
   private CyclicRunner createCyclicRunner(Advisor advisor) {

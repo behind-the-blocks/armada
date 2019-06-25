@@ -9,16 +9,13 @@ import java.util.concurrent.Executor;
 import javax.inject.Inject;
 import javax.inject.Provider;
 
-import org.apache.log4j.Logger;
-import org.apache.log4j.LogManager;
-
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 
 import net.twerion.armada.advisor.LocalNodeDescriptor;
 
 public final class ZookeeperResourceStoreFactory
-  implements Provider<ZookeeperResourceStore> {
+    implements ResourceStoreFactory, Provider<ZookeeperResourceStore> {
 
   private Executor fallbackExecutor;
   private ZookeeperResourceStoreConfig config;
@@ -35,10 +32,11 @@ public final class ZookeeperResourceStoreFactory
     this.nodeDescriptor = nodeDescriptor;
   }
 
-  public ZookeeperResourceStore createZookeeperResourceStore() {
+  public ZookeeperResourceStore createResourceStore() {
     CuratorFramework curator = CuratorFrameworkFactory.newClient(
-        config.connectionString(), config.retryPolicy());
-
+        config.connectionString(),
+        config.retryPolicy()
+    );
     return new ZookeeperResourceStore(
       curator,
       config,
@@ -49,6 +47,6 @@ public final class ZookeeperResourceStoreFactory
 
   @Override
   public ZookeeperResourceStore get() {
-    return createZookeeperResourceStore();
+    return createResourceStore();
   }
 }

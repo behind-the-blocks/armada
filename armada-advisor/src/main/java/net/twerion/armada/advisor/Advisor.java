@@ -19,8 +19,6 @@ import net.twerion.armada.advisor.system.SystemInformationCollector;
  * cycle is still running while a new one should start, it is skipped. There
  * may never be two concurrent cycles running.
  *
- * @version 1.0
- *
  * @see AdvisorConfig
  * @see AdvisorFactory
  */
@@ -31,7 +29,7 @@ public final class Advisor {
   private AnalysisFactory analysisFactory;
   private SystemInformationCollector collector;
 
-  private Advisor(
+  Advisor(
       Semaphore runMutex,
       ResourceStore store,
       ResourceAdvisor analyser,
