@@ -2,13 +2,11 @@
 // Use of this source code is governed by a MIT-style
 // license that can be found in the LICENSE file.
 
-package net.twerion.armada.advisor.system;
-
-import oshi.SystemInfo;
+package net.twerion.armada.advisor.analysis;
 
 import net.twerion.armada.Resources;
 
-public interface SystemInformationCollector {
+public interface ResourceAdvisor {
 
-  void collect(SystemInfo info, Resources.Builder builder);
+  void analyse(Analysis analysation, Resources resources);
 }

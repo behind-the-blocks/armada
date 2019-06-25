@@ -1,10 +1,15 @@
+// Copyright 2019 the Vicuna Authors. All rights reserved.
+// Use of this source code is governed by a MIT-style
+// license that can be found in the LICENSE file.
+
 package net.twerion.armada.advisor.store;
 
 import com.google.common.base.Preconditions;
+
 import org.apache.curator.RetryPolicy;
 
 public final class ZookeeperResourceStoreConfig {
-  public static final String PATH_NODE_ID_PLACEHOLDER = "${node_id}";
+  static final String PATH_NODE_ID_PLACEHOLDER = "${node_id}";
 
   private long timeToLife;
   private String pathFormat;

@@ -7,12 +7,25 @@ package net.twerion.armada.advisor.analysis;
 import net.twerion.armada.advisor.resource.ResourceKind;
 import net.twerion.armada.advisor.resource.ResourceUsage;
 
-public interface Analysis extends AutoCloseable {
-
-  void reportUsage(ResourceKind kind, ResourceUsage usage);
-
-  void reportUsage(ResourceKind kind, ResourceUsage usage, int percentage);
+public final class TestAnalysis implements Analysis {
 
   @Override
-  void close();
+  public void reportUsage(
+      ResourceKind kind,
+      ResourceUsage usage
+  ) {
+
+  }
+
+  @Override
+  public void reportUsage(
+      ResourceKind kind,
+      ResourceUsage usage,
+      int percentage
+  ) {
+
+  }
+
+  @Override
+  public void close() { }
 }

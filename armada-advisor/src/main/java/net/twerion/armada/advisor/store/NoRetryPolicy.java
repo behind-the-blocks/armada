@@ -11,7 +11,7 @@ public final class NoRetryPolicy implements RetryPolicy {
     return false;
   }
 
-  public static NoRetryPolicy create() {
+  static NoRetryPolicy create() {
     return new NoRetryPolicy();
   }
 }

@@ -7,21 +7,34 @@ import oshi.SystemInfo;
 import net.twerion.armada.Resources;
 import net.twerion.armada.advisor.analysis.Analysis;
 import net.twerion.armada.advisor.analysis.AnalysisFactory;
-import net.twerion.armada.advisor.analysis.ResourceAnalyser;
+import net.twerion.armada.advisor.analysis.ResourceAdvisor;
 import net.twerion.armada.advisor.store.ResourceStore;
 import net.twerion.armada.advisor.system.SystemInformationCollector;
 
+/**
+ * Captures the machines resources, analyses and then stores them into the
+ * host-nodes zookeeper path.
+ * <p>
+ * The work of the advisor is run in cycles at a fixed rate. If the current
+ * cycle is still running while a new one should start, it is skipped. There
+ * may never be two concurrent cycles running.
+ *
+ * @version 1.0
+ *
+ * @see AdvisorConfig
+ * @see AdvisorFactory
+ */
 public final class Advisor {
   private Semaphore runMutex;
   private ResourceStore store;
-  private ResourceAnalyser analyser;
+  private ResourceAdvisor analyser;
   private AnalysisFactory analysisFactory;
   private SystemInformationCollector collector;
 
   private Advisor(
       Semaphore runMutex,
       ResourceStore store,
-      ResourceAnalyser analyser,
+      ResourceAdvisor analyser,
       AnalysisFactory analysisFactory,
       SystemInformationCollector collector
   ) {

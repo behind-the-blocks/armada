@@ -1,3 +1,7 @@
+// Copyright 2019 the Vicuna Authors. All rights reserved.
+// Use of this source code is governed by a MIT-style
+// license that can be found in the LICENSE file.
+
 package net.twerion.armada.advisor.store;
 
 import java.util.concurrent.Executor;
@@ -32,12 +36,10 @@ public final class ZookeeperResourceStoreFactory
   }
 
   public ZookeeperResourceStore createZookeeperResourceStore() {
-    Logger logger = LogManager.getLogger(ZookeeperResourceStore.class);
     CuratorFramework curator = CuratorFrameworkFactory.newClient(
         config.connectionString(), config.retryPolicy());
 
     return new ZookeeperResourceStore(
-      logger,
       curator,
       config,
       nodeDescriptor,
