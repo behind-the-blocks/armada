@@ -2,6 +2,8 @@
 
 <p align="center"><img src="docs/assets/armada-banner.jpg" width="360"></p>
 
+** DISCLAIMER: This software is not production ready **
+
 # Overview
 
 Armada is a gameserver orchestration software that is improved for 
