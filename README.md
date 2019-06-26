@@ -2,7 +2,7 @@
 
 <p align="center"><img src="docs/assets/armada-banner.jpg" width="360"></p>
 
-** DISCLAIMER: This software is not production ready **
+**DISCLAIMER: This software is not production ready**
 
 # Overview
 
